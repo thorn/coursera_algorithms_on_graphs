@@ -3,9 +3,20 @@
 import sys
 
 
+def explore(nodes, x):
+    nodes[x]['visited'] = True
+    for node in nodes[x]['neighbours']:
+        if not nodes[node]['visited']:
+            explore(nodes, node)
+
 def number_of_components(adj):
     result = 0
     #write your code here
+    nodes = list(({'visited': False, 'neighbours': neighbours} for neighbours in adj))
+    for node in nodes:
+        if not node['visited']:
+            result += 1
+            explore(nodes, nodes.index(node))
     return result
 
 if __name__ == '__main__':
