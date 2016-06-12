@@ -2,8 +2,16 @@
 
 import sys
 
-def reach(adj, x, y):
+def reach(nodes, x, y):
     #write your code here
+    neighbours = nodes[x]['neighbours']
+    nodes[x]['visited'] = True
+    if y in neighbours:
+        return 1
+    for node in neighbours:
+        if not nodes[node]['visited']:
+            result = reach(nodes, node, y)
+            if result == 1: return result
     return 0
 
 if __name__ == '__main__':
@@ -18,4 +26,5 @@ if __name__ == '__main__':
     for (a, b) in edges:
         adj[a - 1].append(b - 1)
         adj[b - 1].append(a - 1)
-    print(reach(adj, x, y))
+    nodes = list(({'visited': False, 'neighbours': neighbours} for neighbours in adj))
+    print(reach(nodes, x, y))
