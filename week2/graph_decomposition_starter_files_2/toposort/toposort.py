@@ -1,17 +1,24 @@
 #Uses python3
-
 import sys
 
-def dfs(adj, used, order, x):
-    #write your code here
-    pass
+def dfs(nodes, order, node):
+    node["visited"] = True
+    for neighbour_index in node["neighbours"]:
+        neighbour = nodes[neighbour_index]
+        if not neighbour["visited"]:
+            dfs(nodes, order, neighbour)
 
+    order.append(node["index"])
 
 def toposort(adj):
-    used = [0] * len(adj)
     order = []
     #write your code here
-    return order
+    nodes = list(({ "visited": False, "neighbours": neighbours, "index": index } for index, neighbours in enumerate(adj)))
+    for node in nodes:
+        if not node["visited"]:
+            dfs(nodes, order, node)
+
+    return reversed(order)
 
 if __name__ == '__main__':
     input = sys.stdin.read()
