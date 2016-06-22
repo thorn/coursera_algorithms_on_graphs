@@ -4,10 +4,22 @@ import sys
 
 sys.setrecursionlimit(200000)
 
+def dfs(nodes, node):
+    node["visited"] = True
+    for neighbour_index in node["neighbours"]:
+        neighbour = nodes[neighbour_index]
+        if not neighbour["visited"]:
+            dfs(nodes, neighbour)
 
 def number_of_strongly_connected_components(adj):
     result = 0
     #write your code here
+    nodes = list(({ "visited": False, "neighbours": neighbours, "index": index } for index, neighbours in enumerate(adj)))
+    for node in nodes:
+        if not node["visited"]:
+            result += 1
+            dfs(nodes, node)
+
     return result
 
 if __name__ == '__main__':
