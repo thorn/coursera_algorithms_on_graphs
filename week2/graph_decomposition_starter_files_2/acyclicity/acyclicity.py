@@ -2,8 +2,20 @@
 
 import sys
 
+def has_cycle(node, nodes):
+    if node['visited'] == 'now':
+        return 1
+    node['visited'] = 'now'
+    for neighbour_index in node['neighbours']:
+        if has_cycle(nodes[neighbour_index], nodes):
+            return 1
+    node['visited'] = False
+    return 0
 
-def acyclic(adj):
+def acyclic(nodes):
+    for node in nodes:
+        if has_cycle(node, nodes):
+            return 1
     return 0
 
 if __name__ == '__main__':
@@ -15,4 +27,5 @@ if __name__ == '__main__':
     adj = [[] for _ in range(n)]
     for (a, b) in edges:
         adj[a - 1].append(b - 1)
-    print(acyclic(adj))
+    nodes = list(({'visited': False, 'removed': False, 'neighbours': neighbours} for neighbours in adj))
+    print(acyclic(nodes))
