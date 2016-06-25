@@ -5,6 +5,22 @@ import queue
 
 def distance(adj, s, t):
     #write your code here
+    nodes = list(({ "distance": -1, "neighbours": neighbours } for neighbours in adj))
+    start_node = nodes[s]
+    start_node["distance"] = 0
+
+    worker = queue.Queue()
+    worker.put(start_node)
+
+    while not worker.empty():
+        node = worker.get()
+        for neighbour_index in node["neighbours"]:
+            neighbour = nodes[neighbour_index]
+            if neighbour["distance"] == -1:
+                worker.put(neighbour)
+                neighbour["distance"] = node["distance"] + 1
+            if neighbour_index == t:
+                return neighbour["distance"]
     return -1
 
 if __name__ == '__main__':
