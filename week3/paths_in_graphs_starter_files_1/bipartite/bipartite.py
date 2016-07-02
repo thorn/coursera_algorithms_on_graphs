@@ -5,7 +5,30 @@ import queue
 
 def bipartite(adj):
     #write your code here
-    return -1
+    nodes = list(({ "distance": -1, "neighbours": neighbours, "color": False } for neighbours in adj))
+    start_node = nodes[0]
+    start_node["distance"] = 0
+    start_node["color"] = "white"
+
+    worker = queue.Queue()
+    worker.put(start_node)
+
+    while not worker.empty():
+        node = worker.get()
+        for neighbour_index in node["neighbours"]:
+            neighbour = nodes[neighbour_index]
+            if neighbour["distance"] == -1:
+                worker.put(neighbour)
+                neighbour["distance"] = node["distance"] + 1
+                if node["color"] == "white":
+                    neighbour["color"] = "black"
+                elif node["color"] == "black":
+                    neighbour["color"] = "white"
+            else:
+                if neighbour["color"] == node["color"] and neighbour["distance"] == node["distance"]:
+                    return 0
+
+    return 1
 
 if __name__ == '__main__':
     input = sys.stdin.read()
