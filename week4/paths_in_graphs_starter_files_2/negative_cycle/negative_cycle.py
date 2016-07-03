@@ -2,9 +2,29 @@
 
 import sys
 
+def relax(nodes, node):
+    information_changed = False
+    for index, neighbour_index in enumerate(node["neighbours"]):
+        neighbour = nodes[neighbour_index]
+        extended_distance = node["distance"] + node["cost"][index]
+        if neighbour["distance"] > extended_distance:
+            neighbour["distance"] = extended_distance
+            information_changed = True
+    return information_changed
 
 def negative_cycle(adj, cost):
     #write your code here
+    nodes = list({"neighbours": neighbours, "cost": cost[index], "distance": float("inf"), "index": index} for index, neighbours in enumerate(adj))
+    new_source_node = {"neighbours": list(i for i in range(len(nodes))), "cost": list(0 for i in range(len(nodes))), "distance": 0, "index": len(nodes)}
+    nodes.append(new_source_node)
+    for i in range(len(nodes) - 1):
+        for node in nodes:
+            relax(nodes, node)
+
+    for node in nodes:
+        if relax(nodes, node) == True:
+            return 1
+
     return 0
 
 
